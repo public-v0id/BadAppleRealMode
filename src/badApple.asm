@@ -79,12 +79,6 @@ loadsectors:
 	ret
 text:
 	sti
-;	call loadsectors
-;	mov byte[ebx], 0x1F
-;	mov byte[ebx+2], 0x1F
-;	mov byte[ebx+4], 0x1F
-;	mov byte[ebx+6], 0x1F
-;	mov byte[ebx+8], 0x1F
 	mov si, 0x0000 ;Video starts at 0x7E10
 	mov ax, 0x1000
 	mov es, ax
@@ -135,7 +129,6 @@ text:
 	int 0x16
 	jmp .textloop
 videomode:
-;	call loadsectors
 	mov ah, 0x00
 	mov al, 0x12
 	int 0x10
@@ -162,21 +155,13 @@ videomode:
 	cmp byte[ds:bx], 0x00
 	je .white
 	mov byte[ds:bx], 0x00
-;	mov byte[ebx+80], 0x00
 	mov byte[ds:bx+160], 0x00
-;	mov byte[ebx+240], 0x00
 	mov byte[ds:bx+320], 0x00
-;	mov byte[ebx+400], 0x00
 	mov byte[ds:bx+480], 0x00
-;	mov byte[ebx+560], 0x00
 	mov byte[ds:bx+640], 0x00
-;	mov byte[ebx+720], 0x00
 	mov byte[ds:bx+800], 0x00
-;	mov byte[ebx+880], 0x00
 	mov byte[ds:bx+960], 0x00
-;	mov byte[ebx+1040], 0x00
 	mov byte[ds:bx+1120], 0x00
-;	mov byte[ebx+1200], 0x00
 	jmp .videoloop
 .white:
 	mov byte[ds:bx], 0xFF
@@ -190,7 +175,7 @@ videomode:
 	jmp .videoloop
 .nextframe:
 	xor cx, cx
-	mov dx, 0x6400
+	mov dx, 0x6300
 	mov ax, 0x8600
 	int 0x15	
 	jmp .videoloop
@@ -200,7 +185,7 @@ err:
 	mov bp, hex
 	and ax, 0x0F
 	add bp, ax
-        mov ah, 0x0e            ;Номер функции вывода символа на экран
+        mov ah, 0x0e         
         mov al, 'R'
         int 0x10
         mov al, 'E'
